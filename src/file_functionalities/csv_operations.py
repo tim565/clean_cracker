@@ -1,6 +1,32 @@
 import csv
 
 
+def write_dicts_to_csv(data_list, csv_path):
+    """
+    Writes a list of dictionaries to a CSV file.
+
+    Parameters:
+    - data_list (list of dict): The list of dictionaries to be written to the CSV file.
+    - csv_path (str): The path to the CSV file.
+    """
+    try:
+        with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
+            fieldnames = data_list[0].keys()
+
+            writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+
+            # Write the header row
+            writer.writeheader()
+
+            # Write the data
+            for row_dict in data_list:
+                writer.writerow(row_dict)
+
+        print(f"CSV file '{csv_path}' has been successfully created.")
+    except Exception as e:
+        print(f"An error occurred while writing to the CSV file: {e}")
+
+
 def read_csv_create_list(csv_path, column_name):
     """
        Reads a CSV file and extracts values from a specified column into a list.
