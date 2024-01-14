@@ -1,6 +1,37 @@
 import csv
 
 
+def read_csv_create_list(csv_path, column_name):
+    """
+       Reads a CSV file and extracts values from a specified column into a list.
+
+       Parameters:
+       - csv_path (str): The path to the CSV file.
+       - column_name (str): The name of the column from which values will be extracted.
+
+       Returns:
+       - list or None: A list containing values from the specified column, or None if an error occurs.
+
+       The function reads the contents of the CSV file located at `csv_path` and extracts values
+       from the column with the name `column_name`. The extracted values are stored in a list, which
+       is then returned.
+       """
+    with open(csv_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.DictReader(csvfile)
+
+        # Check if the column_name is in the header
+        if column_name not in reader.fieldnames:
+            print(f"Error: Column '{column_name}' not found in the CSV file.")
+            return None
+
+        values_list = []
+        # Iterate through rows and append the column values to the list
+        for row in reader:
+            values_list.append(row[column_name])
+
+    return values_list
+
+
 def read_csv_create_dictionary_list(csv_path):
     """
     Reads a CSV file, removes the Byte Order Mark (BOM) caused by some encodings,
@@ -14,8 +45,8 @@ def read_csv_create_dictionary_list(csv_path):
       The keys are column names, and the values are corresponding data in each row.
     """
     # Read CSV file and manually remove BOM caused by some encodings
-    with open(csv_path, 'r', encoding='utf-8') as file:
-        content = file.read()
+    with open(csv_path, 'r', encoding='utf-8') as csvfile:
+        content = csvfile.read()
         if content.startswith('\ufeff'):
             content = content[1:]
 
