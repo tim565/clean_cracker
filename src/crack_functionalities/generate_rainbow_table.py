@@ -16,9 +16,10 @@ def list_to_list_of_dicts(two_dimensional_list, keys):
     return result_list_of_dicts
 
 
-def generate_rainbow_table(password_file_path, password_column_name="password", user_given_hash_algorithms_list=SUPPORTED_ALGORITHMS):
+def get_cleartext_password_list(password_file_path, password_column_name="password"):
     # This function processes inputs given by the user.
-    # First it is verified if the given file is available and if the column supposed to be hashed is contained in that file.
+    # First it is verified if the given file is available and if the column supposed to be hashed is
+    # contained in that file.
     # In case everything is ok, the cleartext passwords are extracted as a list from the user given file.
     try:
         cleartext_password_list = read_csv_create_list(password_file_path, password_column_name)
@@ -27,26 +28,27 @@ def generate_rainbow_table(password_file_path, password_column_name="password", 
     except AssertionError as ae:
         print(f"{ae}")
     else:
-        hashed_lists = [
-            cleartext_password_list]  # The hashed lists are stored here, e.g. a list for sha1, a list for sha256, a list for sha512
-
-        # The cleartext password list is hashed using the algorithms specified by the user.
-        # If the user did not specify, all algorithms supported by this program are applied on the cleartext passwords.
-        for hash_algorithm in user_given_hash_algorithms_list:
-            hashed_list = hash_values(cleartext_password_list, hash_algorithm)
-            hashed_lists.append(hashed_list)
-
-        dictionary_keys = user_given_hash_algorithms_list
-        dictionary_keys.insert(0, "cleartext_password")
-
-        # Use zip to pair corresponding elements from the three lists
-        combined_list_of_dicts = list_to_list_of_dicts(hashed_lists, user_given_hash_algorithms_list)
-
-        print(combined_list_of_dicts)
-        write_dicts_to_csv(combined_list_of_dicts, "test.csv")
+        return cleartext_password_list
 
 
-file_path = input("Enter the path of the file: ") or 'C:\\Users\\schmi\\Desktop\\SoftwareCraftmannship\\clean_cracker\\demo_files\\50_most_common_passwords.csv'
-column_name = input("Enter the name of the column where password hashes are stored (default: password): ") or "password"
+def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorithms_list=SUPPORTED_ALGORITHMS):
+    # The hashed lists are stored here, e.g. a list for sha1, a list for sha256, a list for sha512
+    hashed_lists = [cleartext_password_list]
+    # The cleartext password list is hashed using the algorithms specified by the user.
+    # If the user did not specify, all algorithms supported by this program are applied on the cleartext passwords.
+    for hash_algorithm in user_given_hash_algorithms_list:
+        hashed_list = hash_values(cleartext_password_list, hash_algorithm)
+        hashed_lists.append(hashed_list)
 
-generate_rainbow_table(file_path, column_name)
+    dictionary_keys = user_given_hash_algorithms_list
+    dictionary_keys.insert(0, "cleartext_password")
+
+    # Use zip to pair corresponding elements from the three lists
+    combined_list_of_dicts = list_to_list_of_dicts(hashed_lists, user_given_hash_algorithms_list)
+    return combined_list_of_dicts
+
+
+def generate_rainbow_table(password_list_file_path, rainbow_table_name):
+    cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
+    combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
+    write_dicts_to_csv(combined_list_of_dicts, f"{rainbow_table_name}.csv")
