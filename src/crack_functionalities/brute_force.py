@@ -1,6 +1,11 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent))
+
 from hash_creator import hash_string
 from itertools import product
 from string import ascii_letters, digits
+
 
 
 def brute_force(max_length, target_hash, include_digits=False, include_special_chars=False):
