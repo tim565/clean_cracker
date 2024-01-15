@@ -46,9 +46,7 @@ def read_csv_create_list(csv_path, column_name):
         reader = csv.DictReader(csvfile)
 
         # Check if the column_name is in the header
-        if column_name not in reader.fieldnames:
-            print(f"Error: Column '{column_name}' not found in the CSV file.")
-            return None
+        assert column_name in reader.fieldnames, f"Error: Column '{column_name}' not found in the CSV file."
 
         values_list = []
         # Iterate through rows and append the column values to the list
@@ -84,7 +82,7 @@ def read_csv_create_dictionary_list(csv_path):
     return data_list
 
 
-def extract_column_to_set(list_of_dictionaries, column_name):
+def extract_column_of_former_csv_to_set(list_of_dictionaries, column_name):
     """
     Extract a specific column from a list of dictionaries and convert it to a set.
 
@@ -95,6 +93,8 @@ def extract_column_to_set(list_of_dictionaries, column_name):
     Returns:
     - A set containing the values of the specified column.
     """
+    assert any(column_name in row for row in list_of_dictionaries), \
+        f"Column '{column_name}' not found in any dictionary."
     column_set = set()
 
     # Iterates through the dictionary and collects all values of the specified column

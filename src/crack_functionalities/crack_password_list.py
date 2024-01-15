@@ -1,5 +1,4 @@
-from src.file_functionalities.csv_operations import (read_csv_create_dictionary_list,
-                                                     extract_column_of_former_csv_to_set)
+from src.file_functionalities.csv_operations import read_csv_create_dictionary_list, extract_column_of_former_csv_to_set
 from src.crack_functionalities.hash_cracker import find_intersection
 
 current_type_of_hash = "sha256"
