@@ -1,11 +1,11 @@
 import sys
 from pathlib import Path
+
 sys.path.append(str(Path(__file__).resolve().parent))
 
 from hash_creator import hash_string
 from itertools import product
 from string import ascii_letters, digits
-
 
 
 def brute_force(max_length, target_hash, include_digits=False, include_special_chars=False):
@@ -28,9 +28,9 @@ def brute_force(max_length, target_hash, include_digits=False, include_special_c
 
     # Define the character set
     charset = ascii_letters
-    if include_digits==True:
+    if include_digits == True:
         charset += digits
-    if include_special_chars==True:
+    if include_special_chars == True:
         charset += '?!#'
 
     # Iterate over all possible lengths
@@ -46,7 +46,6 @@ def brute_force(max_length, target_hash, include_digits=False, include_special_c
     return False, ''
 
 
-
 if __name__ == "__main__":
     # Example usage
 
@@ -54,7 +53,7 @@ if __name__ == "__main__":
     pw_target_hash = hash_string('moin', 'sha256')
     print('The hash value of the password that needs to be found is: ', pw_target_hash)
     print()
-    success, password = brute_force(pw_max_length , pw_target_hash, include_digits=False, include_special_chars=False)
+    success, password = brute_force(pw_max_length, pw_target_hash, include_digits=False, include_special_chars=False)
 
     if success:
         print('The underlying password for the given hash is: ', password)
