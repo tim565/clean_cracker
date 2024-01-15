@@ -1,4 +1,5 @@
-from src.file_functionalities.csv_operations import read_csv_create_dictionary_list, extract_column_of_former_csv_to_set
+from src.file_functionalities.csv_operations import read_csv_create_dictionary_list, \
+    extract_column_of_former_csv_to_set, write_dicts_to_csv
 from src.crack_functionalities.hash_cracker import find_intersection
 
 current_type_of_hash = "sha256"
@@ -48,9 +49,30 @@ def add_plaintext_passwords_to_original_csv(full_target_file, found_hashes_with_
         for found_hash in found_hashes_with_plaintext_passwords:
             hash_available_as_plaintext = found_hash["hash"] == target_password_hash
             if hash_available_as_plaintext:
-
                 # Add plaintext passwords with additional key in dictionary, later it is an additional csv column
                 plaintext_password = found_hash.get('password')
                 target_element['cracked_password'] = plaintext_password
 
     return full_target_file
+
+
+def crack_password_list(rainbow_table_file_path, target_file_path, type_of_hash):
+
+    # Get set of hashes from rainbow table and complete rainbow table incl. plaintext passwords
+    rainbow_table_hash_set, rainbow_table_complete = (
+        get_password_hashes_and_list_of_dictionaries(rainbow_table_file_path))
+
+    # Get set of hashes from target file and complete target file incl. columns such as username, email
+    target_hash_set, target_file_complete = get_password_hashes_and_list_of_dictionaries(target_file_path)
+
+    # Gain the intersection of both hash sets and assign plaintext password to each hash in intersection
+    found_hashes_with_plaintext_passwords = (
+        find_plaintext_passwords_of_hashes(target_hash_set, rainbow_table_hash_set, rainbow_table_complete,
+                                           type_of_hash))
+
+    # Add the plaintext passwords from intersection to according rows in original file
+    full_target_file = add_plaintext_passwords_to_original_csv(target_file_complete,
+                                                               found_hashes_with_plaintext_passwords, type_of_hash)
+
+    # Write original file with new column cracked plaintext passwords to new csv file
+    write_dicts_to_csv(full_target_file, "target_file_with_cracked_passwords.csv")
