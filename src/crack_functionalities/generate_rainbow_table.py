@@ -4,6 +4,16 @@ from src.file_functionalities.csv_operations import read_csv_create_list, write_
 
 
 def list_to_list_of_dicts(two_dimensional_list, keys):
+    """
+    Transposes a two-dimensional list and converts it into a list of dictionaries.
+    
+    Args:
+        two_dimensional_list (list): The two-dimensional list to be transposed.
+        keys (list): The keys to be used for creating dictionaries.
+        
+    Returns:
+        list: A list of dictionaries where each dictionary represents a row of the transposed list.
+    """
     result_list_of_dicts = []
 
     # Transpose the two-dimensional list
@@ -17,10 +27,16 @@ def list_to_list_of_dicts(two_dimensional_list, keys):
 
 
 def get_cleartext_password_list(password_file_path, password_column_name="password"):
-    # This function processes inputs given by the user.
-    # First it is verified if the given file is available and if the column supposed to be hashed is
-    # contained in that file.
-    # In case everything is ok, the cleartext passwords are extracted as a list from the user given file.
+    """
+    Reads a CSV file and extracts the cleartext passwords from the specified column.
+    
+    Args:
+        password_file_path (str): The path to the CSV file.
+        password_column_name (str, optional): The name of the column containing the passwords. Defaults to "password".
+        
+    Returns:
+        list: A list of cleartext passwords extracted from the CSV file.
+    """
     try:
         cleartext_password_list = read_csv_create_list(password_file_path, password_column_name)
     except FileNotFoundError as e:
@@ -32,8 +48,21 @@ def get_cleartext_password_list(password_file_path, password_column_name="passwo
 
 
 def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorithms_list=SUPPORTED_ALGORITHMS):
+    """
+    Generates a table of hashed passwords using the specified hash algorithms.
+    
+    Args:
+        cleartext_password_list (list): A list of cleartext passwords.
+        user_given_hash_algorithms_list (list, optional): A list of hash algorithms to be used for hashing. 
+            Defaults to SUPPORTED_ALGORITHMS.
+            
+    Returns:
+        list: A list of dictionaries representing the table of hashed passwords, where each dictionary 
+            corresponds to a row in the table.
+    """
     # The hashed lists are stored here, e.g. a list for sha1, a list for sha256, a list for sha512
     hashed_lists = [cleartext_password_list]
+    
     # The cleartext password list is hashed using the algorithms specified by the user.
     # If the user did not specify, all algorithms supported by this program are applied on the cleartext passwords.
     for hash_algorithm in user_given_hash_algorithms_list:
@@ -49,6 +78,13 @@ def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorith
 
 
 def generate_rainbow_table(password_list_file_path, rainbow_table_name):
+    """
+    Generates a rainbow table by reading a password list file, hashing the passwords, and writing the results to a CSV file.
+    
+    Args:
+        password_list_file_path (str): The path to the password list file.
+        rainbow_table_name (str): The name of the rainbow table to be generated.
+    """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
     write_dicts_to_csv(combined_list_of_dicts, f"{rainbow_table_name}.csv")
