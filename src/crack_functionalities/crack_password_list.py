@@ -6,6 +6,16 @@ current_type_of_hash = "sha256"
 
 
 def get_password_hashes_and_list_of_dictionaries(file_path):
+    """
+    Reads a CSV file and creates a list of dictionaries representing the file contents.
+    Extracts a specific column from the CSV file and stores the values in a set.
+    
+    Args:
+        file_path (str): The path to the CSV file.
+        
+    Returns:
+        tuple: A tuple containing the set of hashes and the list of dictionaries representing the file contents.
+    """
     try:
         # Can be complete rainbow table or user-given target file
         full_list_of_dictionaries = read_csv_create_dictionary_list(file_path)
@@ -21,6 +31,18 @@ def get_password_hashes_and_list_of_dictionaries(file_path):
 
 
 def find_plaintext_passwords_of_hashes(hashes_to_crack_set, hashes_rainbow_table, full_rainbow_table, type_of_hash):
+    """
+    Finds the plaintext passwords corresponding to a set of hashes by comparing them with a rainbow table.
+    
+    Args:
+        hashes_to_crack_set (set): The set of hashes to crack.
+        hashes_rainbow_table (set): The set of hashes from the rainbow table.
+        full_rainbow_table (list): The complete rainbow table as a list of dictionaries.
+        type_of_hash (str): The type of hash being used.
+        
+    Returns:
+        list: A list of dictionaries containing the found hashes with their corresponding plaintext passwords.
+    """
     # Compare the hashes of the rainbow table and the user-given hashes
     intersection_of_hashes = find_intersection(hashes_to_crack_set, hashes_rainbow_table)
 
@@ -41,6 +63,17 @@ def find_plaintext_passwords_of_hashes(hashes_to_crack_set, hashes_rainbow_table
 
 
 def add_plaintext_passwords_to_original_csv(full_target_file, found_hashes_with_plaintext_passwords, type_of_hash):
+    """
+    Adds the plaintext passwords to the original target file based on the found hashes.
+    
+    Args:
+        full_target_file (list): The complete target file as a list of dictionaries.
+        found_hashes_with_plaintext_passwords (list): The list of dictionaries containing the found hashes with their plaintext passwords.
+        type_of_hash (str): The type of hash being used.
+        
+    Returns:
+        list: The updated target file with the additional column for cracked plaintext passwords.
+    """
     # Iterate through each element in original target file
     for target_element in full_target_file:
         target_password_hash = target_element.get(type_of_hash)
@@ -57,7 +90,14 @@ def add_plaintext_passwords_to_original_csv(full_target_file, found_hashes_with_
 
 
 def crack_password_list(rainbow_table_file_path, target_file_path, type_of_hash):
-
+    """
+    Cracks the passwords in the target file using a rainbow table.
+    
+    Args:
+        rainbow_table_file_path (str): The path to the rainbow table file.
+        target_file_path (str): The path to the target file.
+        type_of_hash (str): The type of hash being used.
+    """
     # Get set of hashes from rainbow table and complete rainbow table incl. plaintext passwords
     rainbow_table_hash_set, rainbow_table_complete = (
         get_password_hashes_and_list_of_dictionaries(rainbow_table_file_path))
