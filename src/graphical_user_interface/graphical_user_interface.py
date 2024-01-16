@@ -7,7 +7,17 @@ from src.crack_functionalities.hash_creator import hash_string
 
 
 class CleanCrackerGUI:
+    """
+    A GUI application for creating rainbow tables, cracking hashes, generating hashes, and brute forcing hashes.
+    """
+
     def __init__(self, root):
+        """
+        Initializes the CleanCrackerGUI class.
+
+        Parameters:
+        - root (tk.Tk): The root window of the application.
+        """
         self.root = root
         self.root.title("Clean Cracker")
         self.root.geometry("900x600")
@@ -19,6 +29,9 @@ class CleanCrackerGUI:
 
 
     def setup_gui_left_side(self):
+        """
+        Sets up the left side of the GUI, including the Create Rainbow Table and Crack Hashes sections.
+        """
         # Create frame for left side
         left_frame = tk.Frame(self.root, background=self.background_color)
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
@@ -59,6 +72,9 @@ class CleanCrackerGUI:
 
 
     def setup_gui_right_side(self):
+        """
+        Sets up the right side of the GUI, including the Generate Hash and Brute Force sections.
+        """
         # Create frame for right side
         right_frame = tk.Frame(self.root, background=self.background_color)
         right_frame.pack(side=tk.RIGHT, fill=tk.BOTH, expand=True)
@@ -127,6 +143,9 @@ class CleanCrackerGUI:
 
 
     def generate_hash_string(self):
+        """
+        Generates a hash string based on the raw string and selected hashing algorithm.
+        """
         try:
             raw_string = self.raw_string_entry.get()
             algorithm = self.hash_algo_raw_var.get()
@@ -139,6 +158,9 @@ class CleanCrackerGUI:
 
 
     def create_rainbow_table(self):
+        """
+        Creates a rainbow table based on the selected CSV file and hashing algorithm.
+        """
         try:
             csv_path = self.csv_path_entry.get()
             algorithm = self.hashing_algorithm_var.get()
@@ -150,6 +172,9 @@ class CleanCrackerGUI:
 
 
     def crack_hashes(self):
+        """
+        Cracks hashes using the selected rainbow table and CSV file.
+        """
         try:
             csv_path_rainbow = self.csv_path_rainbow_entry.get()
             csv_path_hashes = self.csv_path_hashes_entry.get()
@@ -161,6 +186,9 @@ class CleanCrackerGUI:
 
 
     def brute_force_hash(self):
+        """
+        Performs brute force attack on a hash string using the selected parameters.
+        """
         try:
             hash_string = self.hash_string_entry.get()
             max_pw_length = int(self.length_entry.get())
@@ -178,18 +206,41 @@ class CleanCrackerGUI:
 
 
     def on_entry_click(self, event, entry, default_text):
+        """
+        Handles the event when an entry field is clicked.
+
+        Parameters:
+        - event (tk.Event): The event object.
+        - entry (tk.Entry): The entry field that was clicked.
+        - default_text (str): The default text of the entry field.
+        """
         if entry.get() == default_text:
             entry.delete(0, tk.END)
             entry.config(fg='black')
 
 
     def on_focusout(self, event, entry, default_text):
+        """
+        Handles the event when an entry field loses focus.
+
+        Parameters:
+        - event (tk.Event): The event object.
+        - entry (tk.Entry): The entry field that lost focus.
+        - default_text (str): The default text of the entry field.
+        """
         if entry.get() == '':
             entry.insert(0, default_text)
             entry.config(fg='grey')
 
 
     def add_placeholder(self, entry, text):
+        """
+        Adds a placeholder text to an entry field.
+
+        Parameters:
+        - entry (tk.Entry): The entry field to add the placeholder to.
+        - text (str): The placeholder text.
+        """
         entry.insert(0, text)
         entry.config(fg='grey')
         entry.bind("<FocusIn>", lambda event, e=entry, t=text: self.on_entry_click(event, e, t))
@@ -197,6 +248,12 @@ class CleanCrackerGUI:
 
 
     def update_status_create(self, text):
+        """
+        Updates the status text in the Create Hash section.
+
+        Parameters:
+        - text (str): The new status text.
+        """
         self.status_create_text.configure(state="normal")
         self.status_create_text.delete("1.0", tk.END)
         self.status_create_text.insert("1.0", text)
