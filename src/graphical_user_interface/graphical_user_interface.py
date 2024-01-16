@@ -3,6 +3,7 @@ from tkinter import ttk
 import traceback
 
 from src.crack_functionalities.brute_force import brute_force
+from src.crack_functionalities.crack_password_list import crack_password_list
 from src.crack_functionalities.hash_creator import hash_string
 
 
@@ -179,6 +180,7 @@ class CleanCrackerGUI:
             csv_path_rainbow = self.csv_path_rainbow_entry.get()
             csv_path_hashes = self.csv_path_hashes_entry.get()
             print(f"Cracking hashes from {csv_path_hashes} using rainbow table {csv_path_rainbow}")
+            crack_password_list(csv_path_rainbow, csv_path_hashes, "sha256")
             self.status_crack_label.config(text="Finished")
         except Exception as e:
             print(traceback.format_exc())
