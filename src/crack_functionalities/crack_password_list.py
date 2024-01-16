@@ -1,4 +1,4 @@
-from src.file_functionalities.csv_operations import read_csv_create_dictionary_list, \
+from src.side_functionalities.csv_operations import read_csv_create_dictionary_list, \
     extract_column_of_former_csv_to_set, write_dicts_to_csv
 from src.crack_functionalities.hash_cracker import find_intersection
 

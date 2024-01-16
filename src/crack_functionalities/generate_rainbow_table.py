@@ -1,6 +1,6 @@
 from src.configurations import SUPPORTED_ALGORITHMS
 from src.crack_functionalities.hash_creator import hash_values
-from src.file_functionalities.csv_operations import read_csv_create_list, write_dicts_to_csv
+from src.side_functionalities.csv_operations import read_csv_create_list, write_dicts_to_csv
 
 
 def list_to_list_of_dicts(two_dimensional_list, keys):
