@@ -3,8 +3,17 @@ from ...src.crack_functionalities.hash_creator import hash_values
 
 
 class TestHashValuesFunction(unittest.TestCase):
+    """
+    This class contains unit tests for the hash_values function.
+    """
 
     def test_sha256_hashing(self):
+        """
+        Test the hash_values function with SHA256 algorithm.
+
+        This test case verifies that the hash_values function correctly hashes the input values using the SHA256 algorithm.
+        It compares the hashed values returned by the function with the expected hashes and asserts that they are equal.
+        """
         input_values = ['password1', 'secret123', 'example456']
         hashed_values = hash_values(input_values, hash_algorithm='sha256')
 
@@ -17,6 +26,14 @@ class TestHashValuesFunction(unittest.TestCase):
         self.assertEqual(hashed_values, expected_hashes)
 
     def test_md5_hashing(self):
+        
+        """
+        Test the hash_values function with MD5 algorithm.
+
+        This test case verifies that the hash_values function correctly hashes the input values using the MD5 algorithm.
+        It compares the hashed values returned by the function with the expected hashes and asserts that they are equal.
+        """
+        
         input_values = ['password1', 'secret123', 'example456']
         hashed_values = hash_values(input_values, hash_algorithm='md5')
 
