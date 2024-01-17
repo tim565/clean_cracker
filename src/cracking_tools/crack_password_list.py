@@ -6,6 +6,16 @@ from src.utility_functions.helper_functions import get_hash_types_from_set
 
 
 def get_values_from_target_file(file_path, target_column_title):
+    """
+    Extracts the hashes from the target file and returns them as a set along with the complete target file.
+    
+    Args:
+        file_path (str): The path to the target file.
+        target_column_title (str): The title of the column which contains the hashes in the target csv file.
+        
+    Returns:
+        tuple: A tuple containing the set of hashes and the complete target file as a list of dictionaries.
+    """
     try:
         # Complete rainbow table is extracted
         full_list_of_dictionaries = read_csv_create_dictionary_list(file_path)
@@ -21,6 +31,16 @@ def get_values_from_target_file(file_path, target_column_title):
 
 
 def get_values_from_rainbow_file(file_path, target_hash_type):
+    """
+    Extracts the hashes from the rainbow file and returns them as a set along with the complete rainbow file.
+    
+    Args:
+        file_path (str): The path to the rainbow file.
+        target_hash_type (str): The type of hash being used.
+        
+    Returns:
+        tuple: A tuple containing the set of hashes and the complete rainbow file as a list of dictionaries.
+    """
     try:
         # Can be complete rainbow table or user-given target file
         full_list_of_dictionaries = read_csv_create_dictionary_list(file_path)
