@@ -18,3 +18,7 @@ def run_gui():
 
 if __name__ == "__main__":
     run_gui()
+
+
+# TODO: Add Type Anotation
+# TODO: Make demo File examples more impactful

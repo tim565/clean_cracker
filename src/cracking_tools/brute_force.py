@@ -1,4 +1,5 @@
 from src.cracking_tools.hash_creator import hash_string
+from src.utility_functions.helper_functions import get_hash_types_from_set
 from itertools import product
 from string import ascii_letters, digits
 
@@ -28,12 +29,15 @@ def brute_force(max_length, target_hash, include_digits=False, include_special_c
     if include_special_chars == True:
         charset += '?!#'
 
+    type_target_hash =
+
     # Iterate over all possible lengths
     for length in range(1, max_length + 1):
         # Generate all possible combinations of the current length
         for combination in product(charset, repeat=length):
             combination_string = ''.join(combination)
-            combination_hash = hash_string(combination_string, hash_algorithm='sha256')
+
+            combination_hash = hash_string(combination_string, hash_algorithm=type_target_hash)
 
             if combination_hash == target_hash:
                 return True, combination_string
