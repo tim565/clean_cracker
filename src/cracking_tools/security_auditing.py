@@ -4,6 +4,15 @@ from src.utility_functions.csv_operations import read_csv_create_dictionary_list
 
 
 def get_values_from_db_dump_file(file_path):
+    """
+    Reads a CSV file containing a database dump and extracts the full list of dictionaries.
+
+    Args:
+        file_path (str): The path to the CSV file.
+
+    Returns:
+        list: A list of dictionaries representing the database dump.
+    """
     try:
         # Complete rainbow table is extracted
         full_list_of_dictionaries = read_csv_create_dictionary_list(file_path)
@@ -39,6 +48,16 @@ def get_most_common_passwords(file_path, password_column_name="password"):
 
 
 def assign_found_hashes_to_db_dump(hash_intersection: set, db_dump: list):
+    """
+    Assigns password strength to each dictionary in the database dump based on the intersection of hashes.
+
+    Args:
+        hash_intersection (set): The set of hashes that intersect with the most common passwords.
+        db_dump (list): The list of dictionaries representing the database dump.
+
+    Returns:
+        list: The updated list of dictionaries with password strength assigned.
+    """
     for i in db_dump:
         item_to_check = i["sha256"]
         weak_password = item_to_check in hash_intersection
@@ -50,6 +69,16 @@ def assign_found_hashes_to_db_dump(hash_intersection: set, db_dump: list):
 
 
 def audit_database_dump(db_dump_file_path: str, password_list_file_path: str):
+    """
+    Audits a database dump by assigning password strength to each entry based on common passwords.
+
+    Args:
+        db_dump_file_path (str): The path to the CSV file containing the database dump.
+        password_list_file_path (str): The path to the CSV file containing the list of common passwords.
+
+    Returns:
+        None
+    """
 
     db_dump = get_values_from_db_dump_file(db_dump_file_path)
 
