@@ -1,7 +1,9 @@
+from src.configurations import SUPPORTED_ALGORITHMS
 from src.cracking_tools.hash_creator import hash_string
-from src.utility_functions.helper_functions import get_hash_types_from_set
+from src.utility_functions.helper_functions import get_hash_type
 from itertools import product
 from string import ascii_letters, digits
+
 
 
 def brute_force(max_length, target_hash, include_digits=False, include_special_chars=False):
@@ -29,7 +31,10 @@ def brute_force(max_length, target_hash, include_digits=False, include_special_c
     if include_special_chars == True:
         charset += '?!#'
 
-    type_target_hash =
+    type_target_hash = get_hash_type(target_hash)
+    if type_target_hash=='Unknown Hash Type':
+        print('Input hash for brute force has no valid hash type. The type must be among: ', SUPPORTED_ALGORITHMS)
+        return False, ''
 
     # Iterate over all possible lengths
     for length in range(1, max_length + 1):

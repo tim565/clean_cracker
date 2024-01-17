@@ -1,6 +1,6 @@
 import hashlib
 
-# TODO: Determine the difference between both functions and check whether they are actually necessary
+
 
 def hash_values(input_values, hash_algorithm='sha256'):
     """
