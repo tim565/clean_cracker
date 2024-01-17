@@ -1,6 +1,6 @@
 from src.configurations import SUPPORTED_ALGORITHMS
-from src.crack_functionalities.hash_creator import hash_values
-from src.side_functionalities.csv_operations import read_csv_create_list, write_dicts_to_csv
+from src.cracking_tools.hash_creator import hash_values
+from src.utility_functions.csv_operations import read_csv_create_list, write_dicts_to_csv
 
 
 def list_to_list_of_dicts(two_dimensional_list, keys):
@@ -87,4 +87,4 @@ def generate_rainbow_table(password_list_file_path):
     """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
-    write_dicts_to_csv(combined_list_of_dicts, "output_generated_rainbow_table.csv")
+    write_dicts_to_csv(combined_list_of_dicts, "workspace/output/generated_rainbow_table.csv")

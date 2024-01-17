@@ -1,9 +1,4 @@
-import sys
-from pathlib import Path
-
-sys.path.append(str(Path(__file__).resolve().parent))
-
-from hash_creator import hash_string
+from src.cracking_tools.hash_creator import hash_string
 from itertools import product
 from string import ascii_letters, digits
 

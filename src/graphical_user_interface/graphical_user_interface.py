@@ -2,10 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 import traceback
 
-from src.crack_functionalities.hash_creator import hash_string
-from src.crack_functionalities.generate_rainbow_table import generate_rainbow_table
-from src.crack_functionalities.crack_password_list import crack_password_list
-from src.crack_functionalities.brute_force import brute_force
+from src.cracking_tools.hash_creator import hash_string
+from src.cracking_tools.generate_rainbow_table import generate_rainbow_table
+from src.cracking_tools.crack_password_list import crack_password_list
+from src.cracking_tools.brute_force import brute_force
 
 
 class CleanCrackerGUI:
@@ -41,8 +41,8 @@ class CleanCrackerGUI:
         # Section: Create Rainbow Table
         tk.Label(left_frame, text="Create Rainbow Table", bg=self.background_color, font=("Arial", 15)).pack(
             pady=(20, 10))
-        self.csv_path_entry = tk.Entry(left_frame, width=40)
-        self.add_placeholder(self.csv_path_entry, "CSV Path")
+        self.csv_path_entry = tk.Entry(left_frame, width=60)
+        self.add_placeholder(self.csv_path_entry, "CSV Path (relative path workspace/... supported)")
         self.csv_path_entry.pack(pady=(0, 10))
 
         create_button = tk.Button(left_frame, text="Create", command=self.create_rainbow_table)
@@ -53,12 +53,14 @@ class CleanCrackerGUI:
 
         # Section: Crack Hashes Section
         tk.Label(left_frame, text="Crack Hashes", bg=self.background_color, font=("Arial", 15)).pack(pady=(45, 10))
-        self.csv_path_rainbow_entry = tk.Entry(left_frame, width=40)
-        self.add_placeholder(self.csv_path_rainbow_entry, "CSV Path Rainbow Table")
+        self.csv_path_rainbow_entry = tk.Entry(left_frame, width=60)
+        self.add_placeholder(self.csv_path_rainbow_entry,
+                             "CSV Path Rainbow Table (relative path workspace/... supported)")
         self.csv_path_rainbow_entry.pack(pady=(0, 10))
 
-        self.csv_path_hashes_entry = tk.Entry(left_frame, width=40)
-        self.add_placeholder(self.csv_path_hashes_entry, "CSV Path Hashes to Crack")
+        self.csv_path_hashes_entry = tk.Entry(left_frame, width=60)
+        self.add_placeholder(self.csv_path_hashes_entry,
+                             "CSV Path Hashes to Crack (relative path workspace/... supported)")
         self.csv_path_hashes_entry.pack(pady=(0, 10))
 
         self.column_title_of_hashes_entry = tk.Entry(left_frame, width=40)
@@ -179,8 +181,10 @@ class CleanCrackerGUI:
         try:
             csv_path_rainbow = self.csv_path_rainbow_entry.get()
             csv_path_hashes = self.csv_path_hashes_entry.get()
-            print(f"Cracking hashes from {csv_path_hashes} using rainbow table {csv_path_rainbow}")
-            crack_password_list(csv_path_rainbow, csv_path_hashes, "sha256")
+            column_title_of_hashes = self.column_title_of_hashes_entry.get()
+            print(f"Cracking hashes from {csv_path_hashes} for columns {column_title_of_hashes} using rainbow table"
+                  f" {csv_path_rainbow}")
+            crack_password_list(csv_path_rainbow, csv_path_hashes, column_title_of_hashes)
             self.status_crack_label.config(text="Finished")
         except Exception as e:
             print(traceback.format_exc())

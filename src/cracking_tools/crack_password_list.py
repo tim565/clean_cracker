@@ -1,27 +1,31 @@
-from src.side_functionalities.csv_operations import read_csv_create_dictionary_list, \
+from src.configurations import SUPPORTED_ALGORITHMS
+from src.utility_functions.csv_operations import read_csv_create_dictionary_list, \
     extract_column_of_former_csv_to_set, write_dicts_to_csv
-from src.crack_functionalities.hash_cracker import find_intersection
-from src.side_functionalities.hash_recognition import get_hash_type
-
-current_type_of_hash = "sha256"
+from src.cracking_tools.hash_cracker import find_intersection
+from src.utility_functions.helper_functions import get_hash_types_from_set
 
 
-def get_password_hashes_and_list_of_dictionaries(file_path):
-    """
-    Reads a CSV file and creates a list of dictionaries representing the file contents.
-    Extracts a specific column from the CSV file and stores the values in a set.
-    
-    Args:
-        file_path (str): The path to the CSV file.
-        
-    Returns:
-        tuple: A tuple containing the set of hashes and the list of dictionaries representing the file contents.
-    """
+def get_values_from_target_file(file_path, target_column_title):
+    try:
+        # Complete rainbow table is extracted
+        full_list_of_dictionaries = read_csv_create_dictionary_list(file_path)
+        # Store hashes in set for higher efficiency
+        hash_set = extract_column_of_former_csv_to_set(full_list_of_dictionaries, target_column_title)
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+    except AssertionError as ae:  # Generated in case column is not found in given csv file
+        print(f"{ae}")
+    else:
+        # Set is required for cracking, full list of dicts is required for later assignments of hashes
+        return hash_set, full_list_of_dictionaries
+
+
+def get_values_from_rainbow_file(file_path, target_hash_type):
     try:
         # Can be complete rainbow table or user-given target file
         full_list_of_dictionaries = read_csv_create_dictionary_list(file_path)
         # Store hashes in set for higher efficiency
-        hash_set = extract_column_of_former_csv_to_set(full_list_of_dictionaries, current_type_of_hash)
+        hash_set = extract_column_of_former_csv_to_set(full_list_of_dictionaries, target_hash_type)
     except FileNotFoundError as e:
         print(f"Error: {e}")
     except AssertionError as ae:  # Generated in case column is not found in given csv file
@@ -90,32 +94,48 @@ def add_plaintext_passwords_to_original_csv(full_target_file, found_hashes_with_
     return full_target_file
 
 
-def crack_password_list(rainbow_table_file_path, target_file_path):
+def crack_password_list(rainbow_table_file_path, target_file_path, target_column_title):
     """
     Cracks the passwords in the target file using a rainbow table.
     
     Args:
         rainbow_table_file_path (str): The path to the rainbow table file.
         target_file_path (str): The path to the target file.
+        target_column_title (str): The title of the column which contains the hashes in the target csv file.
     """
-    # TO DO:  get current_type_of_hash from user input or better by automatically recognizing it
-
-    # Get set of hashes from rainbow table and complete rainbow table incl. plaintext passwords
-    rainbow_table_hash_set, rainbow_table_complete = (
-        get_password_hashes_and_list_of_dictionaries(rainbow_table_file_path))
 
     # Get set of hashes from target file and complete target file incl. columns such as username, email
-    target_hash_set, target_file_complete = get_password_hashes_and_list_of_dictionaries(target_file_path)
+    target_hash_set, target_file_complete = get_values_from_target_file(target_file_path, target_column_title)
+
+    # Determine correctness of hash types
+    found_hash_types = get_hash_types_from_set(target_hash_set)
+    if len(found_hash_types)==0:
+        print('The target file contains a hash type that is not supported by the following algorythms: ',
+              SUPPORTED_ALGORITHMS)
+        print('The hashes type in the target file needs to be consistend and based on the given algorythm. '
+              'Please correct the file and try again.')
+        return None;
+    elif len(found_hash_types)>1:
+        print('The hash type in the target file is not consitent. The following hash types were detected: ',
+              found_hash_types)
+        return None
+    else:
+        print('The target hash type is: ', found_hash_types[0])
+    target_hash_type = found_hash_types[0]
+
+    # Get set of hashes from rainbow table and complete rainbow table incl. plaintext passwords
+    rainbow_table_hash_set, rainbow_table_complete = \
+        get_values_from_rainbow_file(rainbow_table_file_path, target_hash_type)
 
     # Gain the intersection of both hash sets and assign plaintext password to each hash in intersection
     found_hashes_with_plaintext_passwords = (
         find_plaintext_passwords_of_hashes(target_hash_set, rainbow_table_hash_set, rainbow_table_complete,
-                                           current_type_of_hash))
+                                           target_hash_type))
 
     # Add the plaintext passwords from intersection to according rows in original file
     full_target_file = add_plaintext_passwords_to_original_csv(target_file_complete,
                                                                found_hashes_with_plaintext_passwords,
-                                                               current_type_of_hash)
+                                                               target_hash_type)
 
     # Write original file with new column cracked plaintext passwords to new csv file
-    write_dicts_to_csv(full_target_file, "target_file_with_cracked_passwords.csv")
+    write_dicts_to_csv(full_target_file, "workspace/output/cracked_passwords.csv")
