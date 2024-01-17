@@ -2,9 +2,10 @@ import tkinter as tk
 from tkinter import ttk
 import traceback
 
-from src.crack_functionalities.brute_force import brute_force
-from src.crack_functionalities.crack_password_list import crack_password_list
 from src.crack_functionalities.hash_creator import hash_string
+from src.crack_functionalities.generate_rainbow_table import generate_rainbow_table
+from src.crack_functionalities.crack_password_list import crack_password_list
+from src.crack_functionalities.brute_force import brute_force
 
 
 class CleanCrackerGUI:
@@ -44,11 +45,6 @@ class CleanCrackerGUI:
         self.add_placeholder(self.csv_path_entry, "CSV Path")
         self.csv_path_entry.pack(pady=(0, 10))
 
-        self.hashing_algorithm_var = tk.StringVar()
-        hashing_algorithm = ttk.OptionMenu(left_frame, self.hashing_algorithm_var, "md5", "sha1", "sha224", "sha256",
-                                           "sha384", "sha512")
-        hashing_algorithm.pack(pady=(0, 10))
-
         create_button = tk.Button(left_frame, text="Create", command=self.create_rainbow_table)
         create_button.pack(pady=(0, 10))
 
@@ -64,6 +60,10 @@ class CleanCrackerGUI:
         self.csv_path_hashes_entry = tk.Entry(left_frame, width=40)
         self.add_placeholder(self.csv_path_hashes_entry, "CSV Path Hashes to Crack")
         self.csv_path_hashes_entry.pack(pady=(0, 10))
+
+        self.column_title_of_hashes_entry = tk.Entry(left_frame, width=40)
+        self.add_placeholder(self.column_title_of_hashes_entry, "Title of Column with Hashes")
+        self.column_title_of_hashes_entry.pack(pady=(0, 10))
 
         crack_button = tk.Button(left_frame, text="Crack", command=self.crack_hashes)
         crack_button.pack(pady=(0, 10))
@@ -164,8 +164,8 @@ class CleanCrackerGUI:
         """
         try:
             csv_path = self.csv_path_entry.get()
-            algorithm = self.hashing_algorithm_var.get()
-            print(f"Creating rainbow table with {algorithm} for file {csv_path}")
+            print(f"Creating rainbow table with with all hash algorythms for file {csv_path}")
+            generate_rainbow_table(csv_path)
             self.status_create_label.config(text="Finished")
         except Exception as e:
             print(traceback.format_exc())

@@ -70,14 +70,14 @@ def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorith
         hashed_lists.append(hashed_list)
 
     dictionary_keys = user_given_hash_algorithms_list
-    dictionary_keys.insert(0, "cleartext_password")
+    dictionary_keys.insert(0, "cleartext password")
 
     # Use zip to pair corresponding elements from the three lists
     combined_list_of_dicts = list_to_list_of_dicts(hashed_lists, user_given_hash_algorithms_list)
     return combined_list_of_dicts
 
 
-def generate_rainbow_table(password_list_file_path, rainbow_table_name):
+def generate_rainbow_table(password_list_file_path):
     """
     Generates a rainbow table by reading a password list file, hashing the passwords, and writing the results to a CSV file.
     
@@ -87,4 +87,4 @@ def generate_rainbow_table(password_list_file_path, rainbow_table_name):
     """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
-    write_dicts_to_csv(combined_list_of_dicts, f"{rainbow_table_name}.csv")
+    write_dicts_to_csv(combined_list_of_dicts, "output_generated_rainbow_table.csv")
