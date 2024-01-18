@@ -30,6 +30,25 @@ def get_set_values_from_file(file_path: str, target_column_title: str) -> tuple:
         return hash_set, full_list_of_dictionaries
 
 
+def verify_correctness_target_hash_type(target_hash_set):
+    # Determine correctness of hash types
+    found_hash_types = get_hash_types_from_set(target_hash_set)
+
+    hash_type_not_consistent = len(found_hash_types) > 1
+    hash_type_not_supported = len(found_hash_types) == 0
+
+    assert hash_type_not_supported, (f'The target file contains a hash type that is not supported by the following '
+                                     f'algorithms: {SUPPORTED_ALGORITHMS} The hashes type in the target file needs '
+                                     f'to be consistent and based on the given algorythm. ')
+
+    assert hash_type_not_consistent, (f'The hash type in the target file is not consistent. The following hash types '
+                                      f'were detected: {found_hash_types}')
+
+    target_hash_type = found_hash_types[0]
+    print(f'The target hash type is: {target_hash_type}')
+    return target_hash_type
+
+
 def find_plaintext_passwords_of_hashes(hashes_to_crack: set, hashes_rainbow_table: set, full_rainbow_table: list,
                                        type_of_hash: str) -> list:
     """
@@ -112,35 +131,25 @@ def crack_password_list(rainbow_table_file_path: str, target_file_path: str, tar
     # Get set of hashes from target file and complete target file incl. columns such as username, email
     target_hash_set, target_file_complete = get_set_values_from_file(target_file_path, target_column_title)
 
-    # Determine correctness of hash types
-    found_hash_types = get_hash_types_from_set(target_hash_set)
-    if len(found_hash_types)==0:
-        print('The target file contains a hash type that is not supported by the following algorithms: ',
-              SUPPORTED_ALGORITHMS)
-        print('The hashes type in the target file needs to be consistent and based on the given algorythm. '
-              'Please correct the file and try again.')
-        return None
-    elif len(found_hash_types)>1:
-        print('The hash type in the target file is not consistent. The following hash types were detected: ',
-              found_hash_types)
-        return None
+    try:
+        # Since hashes come from user-generated file it is verified if the hash types are correct
+        target_hash_type = verify_correctness_target_hash_type(target_hash_set)
+    except AssertionError as ae:
+        print(f"{ae}")
     else:
-        print('The target hash type is: ', found_hash_types[0])
-    target_hash_type = found_hash_types[0]
+        # Get set of hashes from rainbow table and complete rainbow table incl. plaintext passwords
+        rainbow_table_hash_set, rainbow_table_complete = \
+            get_set_values_from_file(rainbow_table_file_path, target_hash_type)
 
-    # Get set of hashes from rainbow table and complete rainbow table incl. plaintext passwords
-    rainbow_table_hash_set, rainbow_table_complete = \
-        get_set_values_from_file(rainbow_table_file_path, target_hash_type)
+        # Gain the intersection of both hash sets and assign plaintext password to each hash in intersection
+        found_hashes_with_plaintext_passwords = (
+            find_plaintext_passwords_of_hashes(target_hash_set, rainbow_table_hash_set, rainbow_table_complete,
+                                               target_hash_type))
 
-    # Gain the intersection of both hash sets and assign plaintext password to each hash in intersection
-    found_hashes_with_plaintext_passwords = (
-        find_plaintext_passwords_of_hashes(target_hash_set, rainbow_table_hash_set, rainbow_table_complete,
-                                           target_hash_type))
+        # Add the plaintext passwords from intersection to according rows in original file
+        full_target_file = add_plaintext_passwords_to_original_csv(target_file_complete,
+                                                                   found_hashes_with_plaintext_passwords,
+                                                                   target_hash_type)
 
-    # Add the plaintext passwords from intersection to according rows in original file
-    full_target_file = add_plaintext_passwords_to_original_csv(target_file_complete,
-                                                               found_hashes_with_plaintext_passwords,
-                                                               target_hash_type)
-
-    # Write original file with new column cracked plaintext passwords to new csv file
-    write_dicts_to_csv(full_target_file, "workspace/output/cracked_passwords.csv")
+        # Write original file with new column cracked plaintext passwords to new csv file
+        write_dicts_to_csv(full_target_file, "workspace/output/cracked_passwords.csv")
