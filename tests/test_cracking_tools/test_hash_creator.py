@@ -1,11 +1,8 @@
 import unittest
-from ...src.crack_functionalities.hash_creator import hash_values
+from src.cracking_tools.hash_creator import hash_list
 
 
-class TestHashValuesFunction(unittest.TestCase):
-    """
-    This class contains unit tests for the hash_values function.
-    """
+class TestHashCreatorFunction(unittest.TestCase):
 
     def test_sha256_hashing(self):
         """
@@ -15,7 +12,7 @@ class TestHashValuesFunction(unittest.TestCase):
         It compares the hashed values returned by the function with the expected hashes and asserts that they are equal.
         """
         input_values = ['password1', 'secret123', 'example456']
-        hashed_values = hash_values(input_values, hash_algorithm='sha256')
+        hashed_values = hash_list(input_values, hash_algorithm='sha256')
 
         expected_hashes = [
             'e38ad214943daad1d64c102faec29de4afe9da3d3d605ccd849c4395',
@@ -35,7 +32,7 @@ class TestHashValuesFunction(unittest.TestCase):
         """
         
         input_values = ['password1', 'secret123', 'example456']
-        hashed_values = hash_values(input_values, hash_algorithm='md5')
+        hashed_values = hash_list(input_values, hash_algorithm='md5')
 
         expected_hashes = [
             '5f4dcc3b5aa765d61d8327deb882cf99',

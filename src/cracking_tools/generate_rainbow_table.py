@@ -79,14 +79,18 @@ def generate_table_with_hashes(cleartext_password_list: list[str],
     return combined_list_of_dicts
 
 
-def generate_rainbow_table(password_list_file_path: str) -> None:
+def generate_rainbow_table(password_list_file_path: str, testing: bool = False) -> None:
     """
     Generates a rainbow table by reading a password list file, hashing the passwords, and writing the results to a CSV file.
     
     Args:
+        testing:
         password_list_file_path (str): The path to the password list file.
         rainbow_table_name (str): The name of the rainbow table to be generated.
     """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
-    write_dicts_to_csv(combined_list_of_dicts, "workspace/output/generated_rainbow_table.csv")
+    output_file_path = "workspace/output/generated_rainbow_table.csv"
+    if testing:
+        output_file_path = "../resources/expected_output/generated_rainbow_table.csv"
+    write_dicts_to_csv(combined_list_of_dicts, output_file_path)
