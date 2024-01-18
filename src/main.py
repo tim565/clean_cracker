@@ -16,10 +16,13 @@ def run_gui():
 if __name__ == "__main__":
     run_gui()
 
-# TODO: Add Type Anotation
-# TODO: Make demo File examples more impactful
-# TODO: Complete Readme files with some basic instructions/overview
-# TODO: Check whether this global variable SUPORTED_ALGORYTHMS is always used from configurations.py
-# TODO: Determine the difference between both functions and check whether they are actually necessary in hash_creator.py
-# TODO: String currently use "" and ''. We should only use one style. Lets use ''. If you adapt the "" make sure that
+# TODO: Output file name hochzählen   Adrian
+# TODO: Add Type Anotation    Adrian
+# TODO: Make demo File examples more impactful. Crack outpt file only contains one cracked password   TIM
+# TODO: Complete Readme files with some basic instructions/overview. SO that prpose and functionality is easy to undestand   (TIM)
+# TODO: Check whether this global variable SUPORTED_ALGORYTHMS is always used from configurations.py   (Adrian)
+# TODO: String currently use "" and ''. We should only use one style. Lets use ''. If you adapt the "" make sure that   (Adrian)
 #  the code is still working afterwards.
+# TODO: Write testfunctions fo files:
+#       Adrian:  brute_force.py, GUI, generate_rainbow_table, utility_functions
+#       Schmitz: crack_password_list.py, hash_cracker.py, hash_creator.py, security_auditing
