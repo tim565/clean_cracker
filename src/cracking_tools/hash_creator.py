@@ -1,5 +1,4 @@
 import hashlib
-
 from src.configurations import SUPPORTED_ALGORITHMS
 
 
@@ -19,7 +18,7 @@ def hash_list(input_values: list, hash_algorithm='sha256') -> list:
 
     # Hash each value in list using function hash_string()
     for value in input_values:
-        hash_string(value, hash_algorithm)
+        hashed_values.append(hash_string(value, hash_algorithm))
 
     return hashed_values
 

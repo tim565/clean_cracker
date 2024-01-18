@@ -37,6 +37,7 @@ def get_hash_types_from_set(hash_set):
     for hash in hash_set:
         hash_type = get_hash_type(hash)
         if hash_type=="Unknown Hash Type":
+            print('Hash with unknown type: ', hash)
             return []
         elif hash_type not in found_hash_types:
             found_hash_types.add(hash_type)

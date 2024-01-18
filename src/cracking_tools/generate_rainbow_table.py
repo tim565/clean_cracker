@@ -1,3 +1,4 @@
+import copy
 from src.configurations import SUPPORTED_ALGORITHMS
 from src.cracking_tools.hash_creator import hash_list
 from src.utility_functions.csv_operations import read_csv_create_list, write_dicts_to_csv
@@ -69,9 +70,10 @@ def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorith
         hashed_list = hash_list(cleartext_password_list, hash_algorithm)
         hashed_lists.append(hashed_list)
 
-    dictionary_keys = user_given_hash_algorithms_list
+    dictionary_keys = copy.deepcopy(user_given_hash_algorithms_list)
     dictionary_keys.insert(0, "cleartext password")
 
+    print('len(hashed_lists): ', len(hashed_lists))
     # Use zip to pair corresponding elements from the three lists
     combined_list_of_dicts = list_to_list_of_dicts(hashed_lists, user_given_hash_algorithms_list)
     return combined_list_of_dicts
@@ -86,5 +88,6 @@ def generate_rainbow_table(password_list_file_path):
         rainbow_table_name (str): The name of the rainbow table to be generated.
     """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
+    print('cleartext_password_list: ', cleartext_password_list)
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
-    write_dicts_to_csv(combined_list_of_dicts, "../../workspace/rainbow_files/rainbow_table_large.csv")
+    write_dicts_to_csv(combined_list_of_dicts, "workspace/output/generated_rainbow_table.csv")

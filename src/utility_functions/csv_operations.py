@@ -1,3 +1,5 @@
+import os
+import re
 import csv
 
 
@@ -10,6 +12,9 @@ def write_dicts_to_csv(data_list, csv_path):
     - csv_path (str): The path to the CSV file.
     """
     try:
+        # Add counter to outpt file name
+        csv_path = get_output_file_name(csv_path)
+        print('data_list:', data_list[0:10])
         with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = data_list[0].keys()
 
@@ -25,6 +30,36 @@ def write_dicts_to_csv(data_list, csv_path):
         print(f"CSV file '{csv_path}' has been successfully created.")
     except Exception as e:
         print(f"An error occurred while writing to the CSV file: {e}")
+
+
+def get_output_file_name(file_path):
+    # If the file does not exist, return the original file path
+    if not os.path.exists(file_path):
+        return file_path
+
+    directory, file_name = os.path.split(file_path)
+    file_base, file_extension = os.path.splitext(file_name)
+
+    # Regular expression to identify and separate the counter at the end of the file name
+    # It looks for an underscore followed by digits at the end of the file name
+    match = re.search(r"(.*?)_(\d+)$", file_base)
+
+    if match:
+        base_name, number = match.groups()
+    else:
+        base_name = file_base
+        number = 0
+
+    counter = int(number)
+    new_file_path = file_path
+
+    # Iterate to find the highest existing counter
+    while os.path.exists(new_file_path):
+        counter += 1
+        new_file_name = f"{base_name}_{counter}{file_extension}"
+        new_file_path = os.path.join(directory, new_file_name)
+
+    return new_file_path
 
 
 def read_csv_create_list(csv_path, column_name):

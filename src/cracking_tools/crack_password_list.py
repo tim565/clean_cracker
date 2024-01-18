@@ -34,15 +34,15 @@ def verify_correctness_target_hash_type(target_hash_set):
     # Determine correctness of hash types
     found_hash_types = get_hash_types_from_set(target_hash_set)
 
-    hash_type_not_consistent = len(found_hash_types) > 1
-    hash_type_not_supported = len(found_hash_types) == 0
+    hash_type_consistent = len(found_hash_types) < 2
+    hash_type_supported = len(found_hash_types) == 1
 
-    assert hash_type_not_supported, (f'The target file contains a hash type that is not supported by the following '
-                                     f'algorithms: {SUPPORTED_ALGORITHMS} The hashes type in the target file needs '
-                                     f'to be consistent and based on the given algorythm. ')
-
-    assert hash_type_not_consistent, (f'The hash type in the target file is not consistent. The following hash types '
+    assert hash_type_consistent, (f'The hash type in the target file is not consistent. The following hash types '
                                       f'were detected: {found_hash_types}')
+
+    assert hash_type_supported, (f'The target file contains either no hashes or a hash type that is not supported '
+                                     f'by the following algorithms: {SUPPORTED_ALGORITHMS}. The hashes type in the '
+                                     f'target file needs to be consistent and based on the given algorythm. ')
 
     target_hash_type = found_hash_types[0]
     print(f'The target hash type is: {target_hash_type}')
