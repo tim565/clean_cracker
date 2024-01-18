@@ -23,6 +23,15 @@ def get_hash_type(hash_to_test: str) -> str:
 
 
 def get_hash_types_from_set(hash_set: set[str]) -> list[str]:
+    """
+    Retrieves the unique hash types from a set of hash values.
+
+    Args:
+        hash_set (set[str]): A set of hash values.
+
+    Returns:
+        list[str]: A list of unique hash types found in the hash set.
+    """
     found_hash_types = set()
 
     for hash_value in hash_set:
