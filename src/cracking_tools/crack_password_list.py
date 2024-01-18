@@ -22,9 +22,9 @@ def get_set_values_from_file(file_path: str, target_column_title: str) -> tuple:
         # Store hashes in set for higher efficiency
         hash_set = extract_column_of_former_csv_to_set(full_list_of_dictionaries, target_column_title)
     except FileNotFoundError as e:
-        print(f"Error: {e}")
+        print(f'Error: {e}')
     except AssertionError as ae:  # Generated in case column is not found in given csv file
-        print(f"{ae}")
+        print(f'{ae}')
     else:
         # Set is required for cracking, full list of dicts is required for later assignments of hashes
         return hash_set, full_list_of_dictionaries

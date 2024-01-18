@@ -27,7 +27,7 @@ def list_to_list_of_dicts(two_dimensional_list, keys):
     return result_list_of_dicts
 
 
-def get_cleartext_password_list(password_file_path, password_column_name="password"):
+def get_cleartext_password_list(password_file_path, password_column_name='password'):
     """
     Reads a CSV file and extracts the cleartext passwords from the specified column.
     
@@ -41,9 +41,9 @@ def get_cleartext_password_list(password_file_path, password_column_name="passwo
     try:
         cleartext_password_list = read_csv_create_list(password_file_path, password_column_name)
     except FileNotFoundError as e:
-        print(f"Error: {e}")
+        print(f'Error: {e}')
     except AssertionError as ae:
-        print(f"{ae}")
+        print(f'{ae}')
     else:
         return cleartext_password_list
 
@@ -73,7 +73,6 @@ def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorith
     dictionary_keys = copy.deepcopy(user_given_hash_algorithms_list)
     dictionary_keys.insert(0, "cleartext password")
 
-    print('len(hashed_lists): ', len(hashed_lists))
     # Use zip to pair corresponding elements from the three lists
     combined_list_of_dicts = list_to_list_of_dicts(hashed_lists, user_given_hash_algorithms_list)
     return combined_list_of_dicts
@@ -88,6 +87,5 @@ def generate_rainbow_table(password_list_file_path):
         rainbow_table_name (str): The name of the rainbow table to be generated.
     """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
-    print('cleartext_password_list: ', cleartext_password_list)
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
     write_dicts_to_csv(combined_list_of_dicts, "workspace/output/generated_rainbow_table.csv")

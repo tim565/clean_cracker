@@ -49,7 +49,7 @@ def brute_force(max_length, target_hash, include_digits=False, include_special_c
     return False, ''
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # Example usage
 
     pw_max_length = 4

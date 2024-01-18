@@ -14,7 +14,6 @@ def write_dicts_to_csv(data_list, csv_path):
     try:
         # Add counter to outpt file name
         csv_path = get_output_file_name(csv_path)
-        print('data_list:', data_list[0:10])
         with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = data_list[0].keys()
 
@@ -29,7 +28,7 @@ def write_dicts_to_csv(data_list, csv_path):
 
         print(f"CSV file '{csv_path}' has been successfully created.")
     except Exception as e:
-        print(f"An error occurred while writing to the CSV file: {e}")
+        print(f'An error occurred while writing to the CSV file: {e}')
 
 
 def get_output_file_name(file_path):
@@ -42,7 +41,7 @@ def get_output_file_name(file_path):
 
     # Regular expression to identify and separate the counter at the end of the file name
     # It looks for an underscore followed by digits at the end of the file name
-    match = re.search(r"(.*?)_(\d+)$", file_base)
+    match = re.search(r'(.*?)_(\d+)$', file_base)
 
     if match:
         base_name, number = match.groups()
@@ -56,7 +55,7 @@ def get_output_file_name(file_path):
     # Iterate to find the highest existing counter
     while os.path.exists(new_file_path):
         counter += 1
-        new_file_name = f"{base_name}_{counter}{file_extension}"
+        new_file_name = f'{base_name}_{counter}{file_extension}'
         new_file_path = os.path.join(directory, new_file_name)
 
     return new_file_path

@@ -1,4 +1,4 @@
-import hashlib
+from src.configurations import SUPPORTED_ALGORITHMS_LENGTH_MAPPING
 
 
 def get_hash_type(hash_to_test):
@@ -12,32 +12,21 @@ def get_hash_type(hash_to_test):
     str: The type of hash algorithm used. If the hash length is not recognized, returns "Unknown Hash Type".
     """
 
-    # Dictionary mapping hash lengths to corresponding algorithms
-    hash_algorithms = {
-        32: "md5",
-        40: "sha1",
-        56: "sha224",
-        64: "sha256",
-        96: "sha384",
-        128: "sha512"
-    }
-
     # Calculate the length of the hash
     hash_length = len(hash_to_test)
 
     # Check if the hash length is in the dictionary
-    if hash_length in hash_algorithms:
-        return hash_algorithms[hash_length]
+    if hash_length in SUPPORTED_ALGORITHMS_LENGTH_MAPPING:
+        return SUPPORTED_ALGORITHMS_LENGTH_MAPPING[hash_length]
     else:
-        return "Unknown Hash Type"
+        return 'Unknown Hash Type'
 
 
 def get_hash_types_from_set(hash_set):
     found_hash_types = set()
     for hash in hash_set:
         hash_type = get_hash_type(hash)
-        if hash_type=="Unknown Hash Type":
-            print('Hash with unknown type: ', hash)
+        if hash_type=='Unknown Hash Type':
             return []
         elif hash_type not in found_hash_types:
             found_hash_types.add(hash_type)

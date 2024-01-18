@@ -13,14 +13,13 @@ def run_gui():
     root.mainloop()
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     run_gui()
 
-# TODO: Output file name hochzählen   Adrian
+
 # TODO: Add Type Anotation    Adrian
 # TODO: Make demo File examples more impactful. Crack outpt file only contains one cracked password   TIM
 # TODO: Complete Readme files with some basic instructions/overview. SO that prpose and functionality is easy to undestand   (TIM)
-# TODO: Check whether this global variable SUPORTED_ALGORYTHMS is always used from configurations.py   (Adrian)
 # TODO: String currently use "" and ''. We should only use one style. Lets use ''. If you adapt the "" make sure that   (Adrian)
 #  the code is still working afterwards.
 # TODO: Write testfunctions fo files:

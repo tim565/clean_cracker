@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 import traceback
 
+from src.configurations import SUPPORTED_ALGORITHMS
 from src.cracking_tools.hash_creator import hash_string
 from src.cracking_tools.generate_rainbow_table import generate_rainbow_table
 from src.cracking_tools.crack_password_list import crack_password_list
@@ -21,8 +22,8 @@ class CleanCrackerGUI:
         - root (tk.Tk): The root window of the application.
         """
         self.root = root
-        self.root.title("Clean Cracker")
-        self.root.geometry("900x600")
+        self.root.title('Clean Cracker')
+        self.root.geometry('900x600')
         self.background_color = '#F0F0F0'
         self.root.configure(background=self.background_color)
 
@@ -39,7 +40,7 @@ class CleanCrackerGUI:
         left_frame.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
         # Section: Create Rainbow Table
-        tk.Label(left_frame, text="Create Rainbow Table", bg=self.background_color, font=("Arial", 15)).pack(
+        tk.Label(left_frame, text='Create Rainbow Table', bg=self.background_color, font=("Arial", 15)).pack(
             pady=(20, 10))
         self.csv_path_entry = tk.Entry(left_frame, width=60)
         self.add_placeholder(self.csv_path_entry, "CSV Path (relative path workspace/... supported)")
@@ -89,8 +90,7 @@ class CleanCrackerGUI:
         self.raw_string_entry.pack(pady=(0, 10))
 
         self.hash_algo_raw_var = tk.StringVar()
-        hash_algo_raw = ttk.OptionMenu(right_frame, self.hash_algo_raw_var, "md5", "sha1", "sha224", "sha256", "sha384",
-                                       "sha512")
+        hash_algo_raw = ttk.OptionMenu(right_frame, self.hash_algo_raw_var, *SUPPORTED_ALGORITHMS)
         hash_algo_raw.pack(pady=(0, 10))
 
         generate_button = tk.Button(right_frame, text="Generate Hash", command=self.generate_hash_string)
