@@ -32,6 +32,24 @@ def write_dicts_to_csv(data_list: list[dict], csv_path: str) -> None:
 
 
 def get_output_file_name(file_path: str) -> str:
+
+    """
+    Returns a new file path by incrementing a counter at the end of the file name if the file already exists.
+
+    Args:
+        file_path (str): The original file path.
+
+    Returns:
+        str: The new file path with an incremented counter at the end of the file name.
+
+    Raises:
+        None
+
+    Example:
+        >>> get_output_file_name('/path/to/file.txt')
+        '/path/to/file_1.txt'
+    """
+    
     # If the file does not exist, return the original file path
     file_path_exists = os.path.exists(file_path)
     if not file_path_exists:
