@@ -24,12 +24,19 @@ def get_hash_type(hash_to_test: str) -> str:
 
 def get_hash_types_from_set(hash_set: set[str]) -> list[str]:
     found_hash_types = set()
-    for hash in hash_set:
-        hash_type = get_hash_type(hash)
-        if hash_type=='Unknown Hash Type':
+
+    for hash_value in hash_set:
+        hash_type = get_hash_type(hash_value)
+
+        unknown_hash_type = hash_type == 'Unknown Hash Type'
+        not_in_found_hash_types = hash_type not in found_hash_types
+
+        if unknown_hash_type:
             return []
-        elif hash_type not in found_hash_types:
+
+        elif not_in_found_hash_types:
             found_hash_types.add(hash_type)
+
     return list(found_hash_types)
 
 

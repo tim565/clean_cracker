@@ -12,7 +12,7 @@ def write_dicts_to_csv(data_list: list[dict], csv_path: str) -> None:
     - csv_path (str): The path to the CSV file.
     """
     try:
-        # Add counter to outpt file name
+        # Add counter to output file name
         csv_path = get_output_file_name(csv_path)
         with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
             fieldnames = data_list[0].keys()
@@ -33,7 +33,8 @@ def write_dicts_to_csv(data_list: list[dict], csv_path: str) -> None:
 
 def get_output_file_name(file_path: str) -> str:
     # If the file does not exist, return the original file path
-    if not os.path.exists(file_path):
+    file_path_exists = os.path.exists(file_path)
+    if not file_path_exists:
         return file_path
 
     directory, file_name = os.path.split(file_path)
