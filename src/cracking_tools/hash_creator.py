@@ -1,8 +1,9 @@
 import hashlib
 
+from src.configurations import SUPPORTED_ALGORITHMS
 
 
-def hash_values(input_values, hash_algorithm='sha256'):
+def hash_list(input_values: list, hash_algorithm='sha256') -> list:
     """
     Hashes a list of values (which are usually passwords) using the specified hash algorithm.
 
@@ -16,21 +17,14 @@ def hash_values(input_values, hash_algorithm='sha256'):
     """
     hashed_values = []
 
+    # Hash each value in list using function hash_string()
     for value in input_values:
-        # Create a new hash object using the specified algorithm
-        hash_obj = hashlib.new(hash_algorithm)
-
-        # Update the hash object with the password bytes
-        hash_obj.update(value.encode('utf-8'))
-
-        # Get the hexadecimal representation of the hashed password
-        hashed_value = hash_obj.hexdigest()
-        hashed_values.append(hashed_value)
+        hash_string(value, hash_algorithm)
 
     return hashed_values
 
 
-def hash_string(input_string, hash_algorithm):
+def hash_string(input_string: str, hash_algorithm: str) -> str:
     """
     Hashes an input string using the specified hash algorithm.
 
@@ -43,7 +37,7 @@ def hash_string(input_string, hash_algorithm):
     - str: The hexadecimal hash of the input string.
     """
 
-    supported_algorithms = {
+    hash_libraries = {
         'md5': hashlib.md5,
         'sha1': hashlib.sha1,
         'sha224': hashlib.sha224,
@@ -53,11 +47,11 @@ def hash_string(input_string, hash_algorithm):
     }
 
     # Check if the specified algorithm is supported
-    if hash_algorithm not in supported_algorithms:
+    if hash_algorithm not in SUPPORTED_ALGORITHMS:
         raise ValueError(f"Unsupported hash algorithm: {hash_algorithm}")
 
-    # Create a hash object and update the it with the bytes of the input string
-    hash_obj = supported_algorithms[hash_algorithm]()
+    # Create a hash object and update it with the bytes of the input string
+    hash_obj = hash_libraries[hash_algorithm]()
     hash_obj.update(input_string.encode())
     hexadecimal_representation = hash_obj.hexdigest()
 

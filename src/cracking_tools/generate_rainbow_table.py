@@ -1,5 +1,5 @@
 from src.configurations import SUPPORTED_ALGORITHMS
-from src.cracking_tools.hash_creator import hash_values
+from src.cracking_tools.hash_creator import hash_list
 from src.utility_functions.csv_operations import read_csv_create_list, write_dicts_to_csv
 
 
@@ -66,7 +66,7 @@ def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorith
     # The cleartext password list is hashed using the algorithms specified by the user.
     # If the user did not specify, all algorithms supported by this program are applied on the cleartext passwords.
     for hash_algorithm in user_given_hash_algorithms_list:
-        hashed_list = hash_values(cleartext_password_list, hash_algorithm)
+        hashed_list = hash_list(cleartext_password_list, hash_algorithm)
         hashed_lists.append(hashed_list)
 
     dictionary_keys = user_given_hash_algorithms_list
@@ -87,4 +87,4 @@ def generate_rainbow_table(password_list_file_path):
     """
     cleartext_password_list = get_cleartext_password_list(password_list_file_path, password_column_name="password")
     combined_list_of_dicts = generate_table_with_hashes(cleartext_password_list)
-    write_dicts_to_csv(combined_list_of_dicts, "workspace/output/generated_rainbow_table.csv")
+    write_dicts_to_csv(combined_list_of_dicts, "../../workspace/rainbow_files/rainbow_table_large.csv")
