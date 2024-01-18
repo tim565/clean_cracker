@@ -3,7 +3,7 @@ import re
 import csv
 
 
-def write_dicts_to_csv(data_list, csv_path):
+def write_dicts_to_csv(data_list: list[dict], csv_path: str) -> None:
     """
     Writes a list of dictionaries to a CSV file.
 
@@ -31,7 +31,7 @@ def write_dicts_to_csv(data_list, csv_path):
         print(f'An error occurred while writing to the CSV file: {e}')
 
 
-def get_output_file_name(file_path):
+def get_output_file_name(file_path: str) -> str:
     # If the file does not exist, return the original file path
     if not os.path.exists(file_path):
         return file_path
@@ -61,7 +61,7 @@ def get_output_file_name(file_path):
     return new_file_path
 
 
-def read_csv_create_list(csv_path, column_name):
+def read_csv_create_list(csv_path: str, column_name: str) -> list:
     """
        Reads a CSV file and extracts values from a specified column into a list.
 
@@ -90,7 +90,7 @@ def read_csv_create_list(csv_path, column_name):
     return values_list
 
 
-def read_csv_create_dictionary_list(csv_path):
+def read_csv_create_dictionary_list(csv_path: str) -> list[dict]:
     """
     Reads a CSV file, removes the Byte Order Mark (BOM) caused by some encodings,
     and processes the content into a list of dictionaries.
@@ -116,7 +116,7 @@ def read_csv_create_dictionary_list(csv_path):
     return data_list
 
 
-def extract_column_of_former_csv_to_set(list_of_dictionaries, column_name):
+def extract_column_of_former_csv_to_set(list_of_dictionaries: list[dict], column_name: str) -> set:
     """
     Extract a specific column from a list of dictionaries and convert it to a set.
 

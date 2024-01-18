@@ -4,7 +4,7 @@ from src.cracking_tools.hash_creator import hash_list
 from src.utility_functions.csv_operations import read_csv_create_list, write_dicts_to_csv
 
 
-def list_to_list_of_dicts(two_dimensional_list, keys):
+def list_to_list_of_dicts(two_dimensional_list: list[list], keys: list[str]) -> list[dict]:
     """
     Transposes a two-dimensional list and converts it into a list of dictionaries.
     
@@ -27,7 +27,7 @@ def list_to_list_of_dicts(two_dimensional_list, keys):
     return result_list_of_dicts
 
 
-def get_cleartext_password_list(password_file_path, password_column_name='password'):
+def get_cleartext_password_list(password_file_path: str, password_column_name: str = 'password') -> list[str]:
     """
     Reads a CSV file and extracts the cleartext passwords from the specified column.
     
@@ -48,7 +48,8 @@ def get_cleartext_password_list(password_file_path, password_column_name='passwo
         return cleartext_password_list
 
 
-def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorithms_list=SUPPORTED_ALGORITHMS):
+def generate_table_with_hashes(cleartext_password_list: list[str],
+                               user_given_hash_algorithms_list: list[str] = SUPPORTED_ALGORITHMS) -> list[dict]:
     """
     Generates a table of hashed passwords using the specified hash algorithms.
     
@@ -78,7 +79,7 @@ def generate_table_with_hashes(cleartext_password_list, user_given_hash_algorith
     return combined_list_of_dicts
 
 
-def generate_rainbow_table(password_list_file_path):
+def generate_rainbow_table(password_list_file_path: str) -> None:
     """
     Generates a rainbow table by reading a password list file, hashing the passwords, and writing the results to a CSV file.
     

@@ -5,7 +5,7 @@ from src.cracking_tools.hash_cracker import find_intersection
 from src.utility_functions.helper_functions import get_hash_types_from_set
 
 
-def get_set_values_from_file(file_path: str, target_column_title: str) -> tuple:
+def get_set_values_from_file(file_path: str, target_column_title: str) -> tuple[set, list[dict]]:
     """
     Extracts the hashes from the target file and returns them as a set along with the complete target file.
     
@@ -30,7 +30,7 @@ def get_set_values_from_file(file_path: str, target_column_title: str) -> tuple:
         return hash_set, full_list_of_dictionaries
 
 
-def verify_correctness_target_hash_type(target_hash_set):
+def verify_correctness_target_hash_type(target_hash_set: set) -> str:
     # Determine correctness of hash types
     found_hash_types = get_hash_types_from_set(target_hash_set)
 
@@ -49,8 +49,8 @@ def verify_correctness_target_hash_type(target_hash_set):
     return target_hash_type
 
 
-def find_plaintext_passwords_of_hashes(hashes_to_crack: set, hashes_rainbow_table: set, full_rainbow_table: list,
-                                       type_of_hash: str) -> list:
+def find_plaintext_passwords_of_hashes(hashes_to_crack: set, hashes_rainbow_table: set, full_rainbow_table: list[dict],
+                                       type_of_hash: str) -> list[dict]:
     """
     Finds the plaintext passwords corresponding to a set of hashes by comparing them with a rainbow table.
     
@@ -88,8 +88,9 @@ def find_plaintext_passwords_of_hashes(hashes_to_crack: set, hashes_rainbow_tabl
     return found_hashes_with_plaintext_passwords
 
 
-def add_plaintext_passwords_to_original_csv(full_target_file: list, found_hashes_with_plaintext_passwords: list,
-                                            type_of_hash: str) -> list:  # Returns list of dictionaries
+def add_plaintext_passwords_to_original_csv(full_target_file: list[dict],
+                                            found_hashes_with_plaintext_passwords: list[dict], type_of_hash: str)\
+        -> list[dict]:
     """
     Adds the plaintext passwords to the original target file based on the found hashes.
     

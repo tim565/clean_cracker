@@ -5,7 +5,8 @@ from itertools import product
 from string import ascii_letters, digits
 
 
-def brute_force(max_length, target_hash, include_digits=False, include_special_chars=False):
+def brute_force(max_length: int, target_hash: str, include_digits: bool = False, include_special_chars: bool = False) \
+        -> tuple[bool, str]:
     """
         Attempts to brute-force a password by generating all possible combinations of characters up to a given length,
         and comparing their hash values to a target hash.

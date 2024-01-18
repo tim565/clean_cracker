@@ -2,7 +2,7 @@ import hashlib
 from src.configurations import SUPPORTED_ALGORITHMS
 
 
-def hash_list(input_values: list, hash_algorithm='sha256') -> list:
+def hash_list(input_values: list[str], hash_algorithm: str = 'sha256') -> list[str]:
     """
     Hashes a list of values (which are usually passwords) using the specified hash algorithm.
 

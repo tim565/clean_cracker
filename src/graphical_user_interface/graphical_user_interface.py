@@ -145,7 +145,7 @@ class CleanCrackerGUI:
         self.result_label.pack(pady=(0, 10))
 
 
-    def generate_hash_string(self):
+    def generate_hash_string(self) -> None:
         """
         Generates a hash string based on the raw string and selected hashing algorithm.
         """
@@ -160,7 +160,7 @@ class CleanCrackerGUI:
             self.update_status_create("Error")
 
 
-    def create_rainbow_table(self):
+    def create_rainbow_table(self) -> None:
         """
         Creates a rainbow table based on the selected CSV file and hashing algorithm.
         """
@@ -174,7 +174,7 @@ class CleanCrackerGUI:
             self.status_create_label.config(text="Error")
 
 
-    def crack_hashes(self):
+    def crack_hashes(self) -> None:
         """
         Cracks hashes using the selected rainbow table and CSV file.
         """
@@ -191,7 +191,7 @@ class CleanCrackerGUI:
             self.status_crack_label.config(text="Error")
 
 
-    def brute_force_hash(self):
+    def brute_force_hash(self) -> None:
         """
         Performs brute force attack on a hash string using the selected parameters.
         """
@@ -211,7 +211,7 @@ class CleanCrackerGUI:
             self.result_label.config(text="Error")
 
 
-    def on_entry_click(self, event, entry, default_text):
+    def on_entry_click(self, event: tk.Event, entry: tk.Entry, default_text: str) -> None:
         """
         Handles the event when an entry field is clicked.
 
@@ -225,7 +225,7 @@ class CleanCrackerGUI:
             entry.config(fg='black')
 
 
-    def on_focusout(self, event, entry, default_text):
+    def on_focusout(self, entry: tk.Entry, default_text: str) -> None:
         """
         Handles the event when an entry field loses focus.
 
@@ -239,7 +239,7 @@ class CleanCrackerGUI:
             entry.config(fg='grey')
 
 
-    def add_placeholder(self, entry, text):
+    def add_placeholder(self, entry: tk.Entry, text: str) -> None:
         """
         Adds a placeholder text to an entry field.
 
@@ -250,7 +250,7 @@ class CleanCrackerGUI:
         entry.insert(0, text)
         entry.config(fg='grey')
         entry.bind("<FocusIn>", lambda event, e=entry, t=text: self.on_entry_click(event, e, t))
-        entry.bind("<FocusOut>", lambda event, e=entry, t=text: self.on_focusout(event, e, t))
+        entry.bind("<FocusOut>", lambda event, e=entry, t=text: self.on_focusout(e, t))
 
 
     def update_status_create(self, text):

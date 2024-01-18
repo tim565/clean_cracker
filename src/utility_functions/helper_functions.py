@@ -1,7 +1,7 @@
 from src.configurations import SUPPORTED_ALGORITHMS_LENGTH_MAPPING
 
 
-def get_hash_type(hash_to_test):
+def get_hash_type(hash_to_test: str) -> str:
     """
     Determines the type of hash algorithm used based on the length of the hash.
 
@@ -22,7 +22,7 @@ def get_hash_type(hash_to_test):
         return 'Unknown Hash Type'
 
 
-def get_hash_types_from_set(hash_set):
+def get_hash_types_from_set(hash_set: set[str]) -> list[str]:
     found_hash_types = set()
     for hash in hash_set:
         hash_type = get_hash_type(hash)
@@ -33,7 +33,7 @@ def get_hash_types_from_set(hash_set):
     return list(found_hash_types)
 
 
-def process_user_input(user_input):
+def process_user_input(user_input: str) -> str:
     """
     The user inputs the hash that should be used.
     The input can be in various formats such as Sha-256, SHA-256, sha 256, etc.

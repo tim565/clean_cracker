@@ -1,5 +1,5 @@
 
-def find_intersection(cracking_set, rainbow_set):
+def find_intersection(cracking_set: set, rainbow_set: set) -> set:
     """
     Finds the intersection of two sets. This is an efficient step to find hashes to crack contained in the rainbow table.
 

@@ -3,7 +3,7 @@ from src.utility_functions.csv_operations import read_csv_create_dictionary_list
     extract_column_of_former_csv_to_set, write_dicts_to_csv
 
 
-def get_values_from_db_dump_file(file_path):
+def get_values_from_db_dump_file(file_path: str) -> list[dict]:
     """
     Reads a CSV file containing a database dump and extracts the full list of dictionaries.
 
@@ -26,7 +26,7 @@ def get_values_from_db_dump_file(file_path):
         return full_list_of_dictionaries
 
 
-def get_most_common_passwords(file_path, password_column_name='password'):
+def get_most_common_passwords(file_path: str, password_column_name: str = 'password') -> set[str]:
     """
     Reads a CSV file and extracts the cleartext passwords from the specified column.
 
@@ -47,7 +47,7 @@ def get_most_common_passwords(file_path, password_column_name='password'):
         return set(cleartext_password_list)
 
 
-def assign_found_hashes_to_db_dump(hash_intersection: set, db_dump: list):
+def assign_found_hashes_to_db_dump(hash_intersection: set, db_dump: list[dict]) -> list[dict]:
     """
     Assigns password strength to each dictionary in the database dump based on the intersection of hashes.
 
@@ -68,7 +68,7 @@ def assign_found_hashes_to_db_dump(hash_intersection: set, db_dump: list):
     return db_dump
 
 
-def audit_database_dump(db_dump_file_path: str, password_list_file_path: str):
+def audit_database_dump(db_dump_file_path: str, password_list_file_path: str) -> None:
     """
     Audits a database dump by assigning password strength to each entry based on common passwords.
 
