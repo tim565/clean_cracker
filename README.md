@@ -2,7 +2,7 @@
 Clean Cracker is a tool for creating rainbow tables, cracking passwords and performing password-security audits. 
 
 
-How to use (Lam finishd):
+How to use:
 
 Create Rainbow:
 workspace/demo_files/10k_most_common_passwords.csv
