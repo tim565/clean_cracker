@@ -30,7 +30,6 @@ class CleanCrackerGUI:
         self.setup_gui_left_side()
         self.setup_gui_right_side()
 
-
     def setup_gui_left_side(self):
         """
         Sets up the left side of the GUI, including the Create Rainbow Table and Crack Hashes sections.
@@ -43,7 +42,7 @@ class CleanCrackerGUI:
         tk.Label(left_frame, text='Create Rainbow Table', bg=self.background_color, font=("Arial", 15)).pack(
             pady=(20, 10))
         self.csv_path_entry = tk.Entry(left_frame, width=60)
-        self.add_placeholder(self.csv_path_entry, "CSV Path (relative path workspace/... supported)")
+        self.add_placeholder(self.csv_path_entry, "CSV Path (full path to file)")
         self.csv_path_entry.pack(pady=(0, 10))
 
         create_button = tk.Button(left_frame, text="Create", command=self.create_rainbow_table)
@@ -56,12 +55,12 @@ class CleanCrackerGUI:
         tk.Label(left_frame, text="Crack Hashes", bg=self.background_color, font=("Arial", 15)).pack(pady=(45, 10))
         self.csv_path_rainbow_entry = tk.Entry(left_frame, width=60)
         self.add_placeholder(self.csv_path_rainbow_entry,
-                             "CSV Path Rainbow Table (relative path workspace/... supported)")
+                             "CSV Path Rainbow Table (full path to file)")
         self.csv_path_rainbow_entry.pack(pady=(0, 10))
 
         self.csv_path_hashes_entry = tk.Entry(left_frame, width=60)
         self.add_placeholder(self.csv_path_hashes_entry,
-                             "CSV Path Hashes to Crack (relative path workspace/... supported)")
+                             "CSV Path Hashes to Crack (full path to file)")
         self.csv_path_hashes_entry.pack(pady=(0, 10))
 
         self.column_title_of_hashes_entry = tk.Entry(left_frame, width=40)
@@ -73,7 +72,6 @@ class CleanCrackerGUI:
 
         self.status_crack_label = tk.Label(left_frame, text="", bg=self.background_color)
         self.status_crack_label.pack(pady=(0, 10))
-
 
     def setup_gui_right_side(self):
         """
@@ -144,7 +142,6 @@ class CleanCrackerGUI:
         self.result_label = tk.Label(right_frame, text="", bg=self.background_color)
         self.result_label.pack(pady=(0, 10))
 
-
     def generate_hash_string(self) -> None:
         """
         Generates a hash string based on the raw string and selected hashing algorithm.
@@ -159,7 +156,6 @@ class CleanCrackerGUI:
             print(traceback.format_exc())
             self.update_status_create("Error")
 
-
     def create_rainbow_table(self) -> None:
         """
         Creates a rainbow table based on the selected CSV file and hashing algorithm.
@@ -172,7 +168,6 @@ class CleanCrackerGUI:
         except Exception as e:
             print(traceback.format_exc())
             self.status_create_label.config(text="Error")
-
 
     def crack_hashes(self) -> None:
         """
@@ -190,7 +185,6 @@ class CleanCrackerGUI:
             print(traceback.format_exc())
             self.status_crack_label.config(text="Error")
 
-
     def brute_force_hash(self) -> None:
         """
         Performs brute force attack on a hash string using the selected parameters.
@@ -200,7 +194,8 @@ class CleanCrackerGUI:
             max_pw_length = int(self.length_entry.get())
             include_digits = self.include_digits_var.get()
             include_special = self.include_special_var.get()
-            print(f"Started brute forcing hash {hash_string} with length {max_pw_length}, digits: {include_digits}, special: {include_special}")
+            print(
+                f"Started brute forcing hash {hash_string} with length {max_pw_length}, digits: {include_digits}, special: {include_special}")
             success, password = brute_force(max_pw_length, hash_string, include_digits, include_special)
             if success:
                 self.result_label.config(text="Finished! The password is: " + password)
@@ -209,7 +204,6 @@ class CleanCrackerGUI:
         except Exception as e:
             print(traceback.format_exc())
             self.result_label.config(text="Error")
-
 
     def on_entry_click(self, event: tk.Event, entry: tk.Entry, default_text: str) -> None:
         """
@@ -224,7 +218,6 @@ class CleanCrackerGUI:
             entry.delete(0, tk.END)
             entry.config(fg='black')
 
-
     def on_focusout(self, entry: tk.Entry, default_text: str) -> None:
         """
         Handles the event when an entry field loses focus.
@@ -238,7 +231,6 @@ class CleanCrackerGUI:
             entry.insert(0, default_text)
             entry.config(fg='grey')
 
-
     def add_placeholder(self, entry: tk.Entry, text: str) -> None:
         """
         Adds a placeholder text to an entry field.
@@ -251,7 +243,6 @@ class CleanCrackerGUI:
         entry.config(fg='grey')
         entry.bind("<FocusIn>", lambda event, e=entry, t=text: self.on_entry_click(event, e, t))
         entry.bind("<FocusOut>", lambda event, e=entry, t=text: self.on_focusout(e, t))
-
 
     def update_status_create(self, text):
         """
